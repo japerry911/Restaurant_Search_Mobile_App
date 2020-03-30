@@ -21,10 +21,22 @@ const SearchScreen = () => {
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
             <ScrollView>
-                <RestaurantsList restaurants={filterResultsByPrice('$')} title='Cost-Effective' />
-                <RestaurantsList restaurants={filterResultsByPrice('$$')} title='Bit Pricier' />
-                <RestaurantsList restaurants={filterResultsByPrice('$$$')} title='Big Spender' />
-                <RestaurantsList restaurants={filterResultsByPrice(undefined)} title='No Price Rating' />
+                <RestaurantsList 
+                    restaurants={filterResultsByPrice('$')} 
+                    title='Cost-Effective'
+                />
+                <RestaurantsList 
+                    restaurants={filterResultsByPrice('$$')} 
+                    title='Bit Pricier' 
+                />
+                <RestaurantsList 
+                    restaurants={filterResultsByPrice('$$$')} 
+                    title='Big Spender' 
+                />
+                <RestaurantsList 
+                    restaurants={filterResultsByPrice(undefined)} 
+                    title='No Price Rating'
+                />
             </ScrollView>
         </>
     );
