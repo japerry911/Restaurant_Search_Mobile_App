@@ -1,48 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar';
-import yelp from '../api/yelp';
+import useRestaurants from '../hooks/useRestaurants';
+import RestaurantsList from '../components/RestaurantsList';
 
 const SearchScreen = () => {
     const [term, setTerm] = useState('');
-    const [restaurants, setRestaurants] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [searchApi, restaurants, errorMessage] = useRestaurants();
 
-    const searchApi = async searchTerm => {
-        try {
-            const response = await yelp.get('/search', {
-                params: {
-                    limit: 50,
-                    term: searchTerm,
-                    location: 'denver'
-                }
-            });
-
-            setRestaurants(response.data.businesses);
-        } catch (err) {
-            setErrorMessage('Something went wrong');
-        }
+    const filterResultsByPrice = price => {
+        return restaurants.filter(restaurant => restaurant.price === price); 
     }
 
-    useEffect(() => {
-        searchApi('top rated')
-    }, []);
-
     return (
-        <View>
+        <>
             <SearchBar 
                 term={term} 
                 onTermChange={setTerm} 
                 onTermSubmit={() => searchApi(term)}
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
-            <Text>We have found {restaurants.length} results</Text>
-        </View>
+            <ScrollView>
+                <RestaurantsList restaurants={filterResultsByPrice('$')} title='Cost-Effective' />
+                <RestaurantsList restaurants={filterResultsByPrice('$$')} title='Bit Pricier' />
+                <RestaurantsList restaurants={filterResultsByPrice('$$$')} title='Big Spender' />
+                <RestaurantsList restaurants={filterResultsByPrice(undefined)} title='No Price Rating' />
+            </ScrollView>
+        </>
     );
 }
 
-const styles = StyleSheet.create({
-    
-});
+const styles = StyleSheet.create({});
 
 export default SearchScreen;
