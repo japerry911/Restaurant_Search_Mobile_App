@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, ScrollView } from 'react-native';
 import yelp from '../api/yelp';
 
 const RestaurantsShowScreen = ({ navigation }) => {
@@ -20,9 +20,20 @@ const RestaurantsShowScreen = ({ navigation }) => {
     }
 
     return (
-        <View>
-            <Text>{restaurant.name}</Text>
-            <FlatList 
+        <View style={styles.containerStyle}>
+            <Text style={styles.textHeaderStyle}>{`${restaurant.name}\n`}</Text>
+            <Text style={styles.listHeaderStyle}>Categories:</Text>
+            <FlatList
+                data={restaurant.categories}
+                keyExtractor={category => category.alias}
+                renderItem={({ item }) => {
+                    return (
+                        <Text style={styles.listItemStyle}>{item.title}</Text>
+                    );
+                }}
+            />
+            <FlatList
+                horizontal 
                 data={restaurant.photos}
                 keyExtractor={photo => photo}
                 renderItem={({ item }) => {
@@ -36,9 +47,28 @@ const RestaurantsShowScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        flex: 1,
+    },
     imageStyle: {
-        height: 200,
-        width: 300
+        height: 100,
+        width: 200,
+        marginLeft: 10,
+        marginTop: 10,
+        borderRadius: 4
+    },
+    textHeaderStyle: {
+        fontSize: 20,
+        marginLeft: 10,
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    listHeaderStyle: {
+        fontSize: 16,
+        marginLeft: 10
+    },
+    listItemStyle: {
+        marginLeft: 20
     }
 });
 

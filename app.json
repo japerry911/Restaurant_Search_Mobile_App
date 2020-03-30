@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Blank Template",
-    "slug": "restaurant_search_mobile_app",
+    "name": "Skylord's Food/Drink Search",
+    "slug": "expo.io/@skylord911/native-component-list",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
